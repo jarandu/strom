@@ -94,12 +94,6 @@ onMount(async () => {
 
 <main>
 
-{#each data.hours as hour}
-<div class="{ hour.level }">
-    Kl {parseInt(hour.hour).toLocaleString('nb-NO', { minimumIntegerDigits: 2 })}-{parseInt(hour.hour+1).toLocaleString('nb-NO', { minimumIntegerDigits: 2 })}: <strong>{hour.price}</strong> øre
-</div>
-{/each}
-
 
 {#if data.hours.length == 0 }
 <div class="loading">
@@ -137,6 +131,14 @@ onMount(async () => {
     {/if}
 </div>
 {/if}
+
+<div style="margin-block: 200px;">
+    {#each data.hours as hour}
+    <div class="{ hour.level }">
+        Kl {parseInt(hour.hour).toLocaleString('nb-NO', { minimumIntegerDigits: 2 })}-{parseInt(hour.hour+1).toLocaleString('nb-NO', { minimumIntegerDigits: 2 })}: <strong>{hour.price}</strong> øre
+    </div>
+    {/each}
+</div>
 
 </main>
 
