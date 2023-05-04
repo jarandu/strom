@@ -1,0 +1,28 @@
+main {
+    font-family: 'Open Sans';
+    font-size: 13px;
+    line-height: 1;
+    
+    --green: #c3d7af;
+    --red: #db97a6;
+    --yellow: #fcda51;
+    --lightyellowgray: #eee9db;
+}
+a {
+    color: black;
+    font-weight: 600;
+    text-decoration-thickness: .12em;
+    text-underline-offset: .12em;
+    text-decoration-color: var(--yellow);
+}
+a:hover {
+    text-decoration-color: black;
+}
+.pill {
+    background:var(--lightyellowgray);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 99px;
+    padding: 3px 7px;
+}

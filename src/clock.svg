@@ -1,0 +1,17 @@
+<svg class="now" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+    <circle cx="500" cy="500" r="480"/>
+    <polyline points="500 150 500 500 700 700"/>
+</svg>
+<style>
+svg.now {
+    fill: none;
+    stroke: black;
+    height: 14px;
+}
+svg.now circle {
+    stroke-width: 40px;
+}
+svg.now polyline {
+    stroke-width: 50px;
+}
+</style>
