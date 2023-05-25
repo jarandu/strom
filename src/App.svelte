@@ -60,17 +60,22 @@ function analyseData(d) {
 }
 
 function getRegion() {
-    let cookie = document.cookie.split("; ").find((row) => row.startsWith("Region="))?.split("=")[1]
+    let cookie = document.cookie.split("; ").find((row) => row.startsWith("Region="))?.split("=")[1] || ""
     return cookie
 }
 
 function setRegion(region) {
     document.cookie = `Region=${region}; SameSite=None; Secure`
     currentRegion = region
+    populate()
 }
 
 function populate() {
-    fetch("https://services.api.no/api/acies/v1/custom/EntsoElectricityPrice?greaterThan=startTime:2023-05-03T22:00:00.000Z&equal=deliveryArea:NO1&fields=(startTime,value)")
+    console.log(currentRegion)
+    let now = new Date()
+    now.setDate(now.getDate() - 1)
+    let date = now.toISOString().substring(0,10)
+    fetch(`https://services.api.no/api/acies/v1/custom/EntsoElectricityPrice?greaterThan=startTime:${date}T22:00:00.000Z&equal=deliveryArea:${currentRegion}&fields=(startTime,value)`)
     .then(r => r.json())
     .then(d => {
         data = analyseData(d)
@@ -81,8 +86,8 @@ function populate() {
 
 onMount(async () => {
     let currentRegion = await getRegion()
+    if (currentRegion != "") populate()
     console.log("Region: " + currentRegion)
-    populate()
 })
 
 </script>
@@ -95,19 +100,12 @@ onMount(async () => {
 <main>
 
 
-{#if data.hours.length == 0 }
-<div class="loading">
-    <div style="animation-delay: 0.2s;"></div>
-    <div style="animation-delay: 0.4s;"></div>
-    <div style="animation-delay: 0.6s;"></div>
-</div>
-{:else}
 <div class="track">
     <svg class="el" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 293 432">
         <polygon points="63 432 293 187 168 166 226 0 0 241 124 266 63 432"/>
     </svg>
     <h2>Strømprisen</h2>
-    {#if currentRegion == ""}
+    {#if currentRegion === ""}
     <div class="choose-region">
         <div class="">Velg region:</div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -116,6 +114,13 @@ onMount(async () => {
         <div class="pill" title="NO2" on:click={() => { setRegion("NO2") }}>Sør</div>
     </div>
     {:else}
+        {#if data.hours.length == 0 }
+    <div class="loading">
+        <div style="animation-delay: 0.2s;"></div>
+        <div style="animation-delay: 0.4s;"></div>
+        <div style="animation-delay: 0.6s;"></div>
+    </div>
+        {:else}
     <div>
         Nå: <span class="price {getNow(data).level}{ getNow(data).level !== "normal" ? " pill" : ""}"><strong>{getNow(data).price}</strong>&nbsp;øre/kWh</span>. <Tell data={getNow(data).level} />
     </div>
@@ -128,9 +133,9 @@ onMount(async () => {
             <path stroke-width="18" d="m210,15v390m195-195H15M59,90a260,260 0 0,0 302,0 m0,240 a260,260 0 0,0-302,0M195,20a250,250 0 0,0 0,382 m30,0 a250,250 0 0,0 0-382"/>
         </svg>
     </div>
+        {/if}
     {/if}
 </div>
-{/if}
 
 <div style="margin-block: 200px;">
     {#each data.hours as hour}
