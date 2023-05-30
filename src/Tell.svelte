@@ -10,11 +10,15 @@ const suggestions = {
         "Ikke lad bilen nå, det er dyrt å bruke strøm."
     ],
     low: [
-        "Ta deg en dusj, nå er det billig!!"
+        "Ta deg en dusj, nå er det billig!",
+        "Lad elbilen, nå er billig!"
+    ],
+    free:[
+        "Nå er det nesten gratis! Men husk at du betaler nettleie også."
     ],
     normal: [
         "Strømprisen ligger på snittet for dagen.",
-        "Helk ok pris."
+        "Helt ok pris."
     ]
 }
 
